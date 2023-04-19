@@ -59,12 +59,14 @@ class Equipment:
         return [armor.name for armor in self.equipment.armors]
 
     @staticmethod
-    def _get_equipment_data() -> EquipmentData:
-        """ этот метод загружает json в переменную EquipmentData """
+     def _get_equipment_data() -> EquipmentData:
+        """
+        Этот метод загружает json в переменную EquipmentData
+        """
+        with open("./data/equipment.json", encoding='utf-8') as file:
+            data = json.load(file)
+            equipment_schema = marshmallow_dataclass.class_schema(EquipmentData)
         try:
-            with open("./data/equipment.json", encoding="utf-8") as equipment:
-                data = json.load(equipment)
-                equipment_schema = marshmallow_dataclass.class_schema(EquipmentData)
             return equipment_schema().load(data)
         except marshmallow.exceptions.ValidationError:
             raise ValueError
